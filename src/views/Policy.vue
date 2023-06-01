@@ -124,6 +124,11 @@
                     <span>{{ scope.row.start_time|format }}</span>
                 </template>
             </el-table-column>
+            <el-table-column>
+                <template slot-scope="scope">
+                    <el-button type="danger" icon="el-icon-delete" circle @click="delPolicy(scope.row.id)"></el-button>
+                </template>
+            </el-table-column>
         </el-table>
     </div>
 </template>
@@ -132,10 +137,11 @@ import axios from "axios";
 
 export default {
     name: 'Type',
+    inject:['reload'],
     data() {
         return {
 
-            dataList: [],
+            dataList: {data:{id:''}},
             insuranceList: [],
             insertPolicyForm: {
                 "insurer": { // 保险⼈
@@ -248,6 +254,14 @@ export default {
                 console.log(err)
             })
         },
+        delPolicy(id){
+            console.log(id)
+            axios.get('http://vaala.cloud:9046/policy/delete/'+id).then(res => {
+                console.log("删除成功")
+                console.log(this.insuranceList)
+                this.reload()
+            })
+        },
         getInsuranceList() {
             axios.get('http://vaala.cloud:9046/insurance/list').then(res => {
                 console.log(res.data.data.insurance_list)
@@ -269,7 +283,8 @@ export default {
     },
     mounted() {
         this.getData();
-        this.getInsuranceList()
+        this.getInsuranceList();
+        this.delPolicy(id);
     },
     filters: {
         format(value) {

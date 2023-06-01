@@ -67,7 +67,7 @@ export default {
                 value: 'insured',
                 label: '被保人身份证号'
             }, {
-                value: 'insurance',
+                value: 'insuranceID',
                 label: '险种'
             }],
             computeOptions: [{
@@ -86,7 +86,7 @@ export default {
         Pay() {
             // 非空判断
             if (!this.value || !this.filterContent) return this.$message.error('请选择筛选条件')
-            if (this.value === 'insurance') {
+            if (this.value === 'insuranceID') {
                 axios.get('http://vaala.cloud:9046/calculate/insuranceID/' + this.filterContent).then(res => {
 
                     if (res.data.code === 500) return this.$message.error('查询失败')
@@ -105,6 +105,7 @@ export default {
             }
 
         },
+        
         // getTypeData() {
         //     axios.get('http://vaala.cloud:9046/policy/listDetail').then(res => {
         //         // console.log(res)

@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+        <router-view v-if="isShow"></router-view>
     </div>
 </template>
 
@@ -9,6 +9,24 @@
 
 export default {
     name: 'app',
+    provide () {
+        return {
+            reload: this.reload
+        }
+    },
+    data () {
+        return {
+            isShow: true
+        }
+    },
+    methods: {
+        reload () {
+            this.isShow= false
+            this.$nextTick(function () {
+            this.isShow= true
+            })
+        }
+    }
 }
 </script>
 
